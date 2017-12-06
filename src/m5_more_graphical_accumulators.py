@@ -10,7 +10,7 @@ before you can implement a solution to the problem in Python.
   
 Authors: David Mutchler, Dave Fisher, Valerie Galluzzi, Amanda Stouder,
          their colleagues and Andrew Weger.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+"""  # DONE: PUT YOUR NAME IN THE LINE ABOVE.
 
 import rosegraphics as rg
 
@@ -336,7 +336,7 @@ def draw_lines_from_rectangles(rectangle1, rectangle2, n, window):
       :type window: rg.RoseWindow
       """
     # ------------------------------------------------------------------
-    # TODO: 5. Implement and test this function.
+    # DONE Implement and test this function.
     #          Tests have been written for you (above).
     #
     # CONSIDER using the ACCUMULATOR IN GRAPHICS pattern,
@@ -349,6 +349,33 @@ def draw_lines_from_rectangles(rectangle1, rectangle2, n, window):
     #          ** FIRST DO A CONCRETE EXAMPLE BY HAND! **
     ####################################################################
     # ------------------------------------------------------------------
+    rectangle1.attach_to(window)
+    rectangle2.attach_to(window)
+    point1 = rg.Point(rectangle1.get_center().x, rectangle1.get_center().y)
+    point2 = rg.Point(rectangle2.get_center().x, rectangle2.get_center().y)
+    line = rg.Line(point1, point2)
+    line.thickness = 5
+    line.color = rectangle1.outline_color
+    line.attach_to(window)
+    point1_move_x = rectangle1.get_lower_left_corner().x - point1.x
+    point1_move_y = rectangle1.get_lower_left_corner().y - point1.y
+    point1 = rg.Point(rectangle1.get_lower_left_corner().x, rectangle1.get_lower_left_corner().y)
+    point2 = rg.Point(rectangle2.get_center().x + point1_move_x, rectangle2.get_center().y + point1_move_y)
+    line = rg.Line(point1, point2)
+    line.attach_to(window)
+    for k in range(n - 1):
+        point1 = rg.Point(rectangle1.get_lower_left_corner().x + (point1_move_x * k),
+                          rectangle1.get_lower_left_corner().y + (point1_move_y * k))
+        point2 = rg.Point(rectangle2.get_center().x + (point1_move_x * (k + 1)),
+                          rectangle2.get_center().y + (point1_move_y * (k + 1)))
+        line = rg.Line(point1, point2)
+        line.thickness = 5
+        if k % 2 == 0:
+            line.color = rectangle2.outline_color
+        else:
+            line.color = rectangle1.outline_color
+        line.attach_to(window)
+    window.render()
 
 
 # ----------------------------------------------------------------------
